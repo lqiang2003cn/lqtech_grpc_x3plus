@@ -15,3 +15,17 @@ class HelloReply(_message.Message):
     MESSAGE_FIELD_NUMBER: _ClassVar[int]
     message: str
     def __init__(self, message: _Optional[str] = ...) -> None: ...
+
+class SingleJointPositionRequest(_message.Message):
+    __slots__ = ("joint_name", "joint_value")
+    JOINT_NAME_FIELD_NUMBER: _ClassVar[int]
+    JOINT_VALUE_FIELD_NUMBER: _ClassVar[int]
+    joint_name: str
+    joint_value: int
+    def __init__(self, joint_name: _Optional[str] = ..., joint_value: _Optional[int] = ...) -> None: ...
+
+class SingleJointPositionResponse(_message.Message):
+    __slots__ = ("result",)
+    RESULT_FIELD_NUMBER: _ClassVar[int]
+    result: str
+    def __init__(self, result: _Optional[str] = ...) -> None: ...
