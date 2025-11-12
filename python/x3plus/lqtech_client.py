@@ -8,11 +8,11 @@ import time
 
 
 def run():
-    with grpc.insecure_channel('192.168.31.238:50051') as channel:
+    with grpc.insecure_channel('localhost:50051') as channel:
         stub = x3plus_pb2_grpc.RosmasterServicesStub(channel)
         response = stub.SetSingleJointPosition(x3plus_pb2.SingleJointPositionRequest(
             joint_name="arm_joint1",
-            joint_value=31
+            joint_value=10
         ))
         print(f"Greeter client received: {response.result}")
 

@@ -1,5 +1,8 @@
-# execute in the python/x3plus folder
-cd ~/lqtech/grpc/lqtech_grpc_x3plus/python/x3plus && python -m grpc_tools.protoc -I../../protos --python_out=. --pyi_out=. --grpc_python_out=. ../../protos/x3plus.proto
+# execute in the gRPC folder: the root of the project
+cd lqtech_grpc_x3plus/python/x3plus && python -m grpc_tools.protoc -I../../protos --python_out=. --pyi_out=. --grpc_python_out=. ../../protos/x3plus.proto
 
 # start gRPC server
 python x3plus_service_lqtech.py 
+
+# chanage right 
+sudo chmod a+rw /dev/ttyUSB0
