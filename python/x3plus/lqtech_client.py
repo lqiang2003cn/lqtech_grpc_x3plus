@@ -2,19 +2,39 @@
 import logging
 
 import grpc
-import x3plus_pb2 as x3plus_pb2
-import x3plus_pb2_grpc as x3plus_pb2_grpc
+import x3plus_pb2 as msg_def
+import x3plus_pb2_grpc as srv_def
 import time
 
 
 def run():
     with grpc.insecure_channel('localhost:50051') as channel:
-        stub = x3plus_pb2_grpc.RosmasterServicesStub(channel)
-        response = stub.SetSingleJointPosition(x3plus_pb2.SingleJointPositionRequest(
-            joint_name="arm_joint1",
-            joint_value=10
-        ))
-        print(f"Greeter client received: {response.result}")
+
+        stub = srv_def.RosmasterServicesStub(channel)
+        
+        count = 1
+        for i in range(count):
+            print(f"---- iteration {i+1} / {count} ----")
+            response = stub.getJointPositionArray(msg_def.Empty())
+            print(f"client received: {response.joint_array}")
+
+            target_angles = list(response.joint_array)
+            target_angles[0] = 0  # Example modification
+            
+            response = stub.setJointPositionArray(
+                msg_def.JointPosititonArray(
+                    joint_array=target_angles
+                )
+            )
+            print(f"Set joint position response: {response.result}")
+
+            response = stub.setJointPositionArray(
+                msg_def.JointPosititonArray(
+                    joint_array=target_angles
+                )
+            )
+            print(f"Set joint position response: {response.result}")
+
 
 
 if __name__ == "__main__":

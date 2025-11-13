@@ -1,8 +1,25 @@
 # execute in the gRPC folder: the root of the project
 cd lqtech_grpc_x3plus/python/x3plus && python -m grpc_tools.protoc -I../../protos --python_out=. --pyi_out=. --grpc_python_out=. ../../protos/x3plus.proto
 
-# start gRPC server
-python x3plus_service_lqtech.py 
+# execute in the gRPC folder: the root of the project
+python lqtech_grpc_x3plus/python/x3plus/lqtech_client.py
 
 # chanage right 
 sudo chmod a+rw /dev/ttyUSB0
+
+sudo apt-get remove --purge cmake cmake-data
+sudo apt-get update
+sudo apt-get install cmake
+# Or to ensure you get all data packages:
+sudo apt-get install cmake cmake-data
+
+sudo apt update
+sudo apt --fix-broken install
+sudo apt upgrade
+sudo apt autoremove
+
+cd .. 
+rm -rf build
+mkdir build
+cd build
+cmake .. 

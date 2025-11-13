@@ -1,5 +1,5 @@
-import x3plus_pb2_grpc as x3plus_pb2_grpc
-import x3plus_pb2 as x3plus_pb2
+import x3plus_pb2_grpc as srv_def
+import x3plus_pb2 as msg_def
 import grpc
 from concurrent import futures
 import logging
@@ -9,7 +9,7 @@ import time
 
 
 # RouteGuideServicer provides an implementation of the methods of the RouteGuide service.
-class RosmasterServices(x3plus_pb2_grpc.RosmasterServices):
+class RosmasterServices(srv_def.RosmasterServices):
 
     def __init__(self):
         super().__init__()
@@ -28,43 +28,54 @@ class RosmasterServices(x3plus_pb2_grpc.RosmasterServices):
 
         print("service initialized")
 
-    def SayHello(self, request, context):
-        return x3plus_pb2.HelloReply(message=f"Hello, {request.name}")
-    
-    def SetSingleJointPosition(self, request:x3plus_pb2.SingleJointPositionRequest, context):
-        print(f"joint value is: {request.joint_value}")
-        joint_name = request.joint_name
-        joint_value = request.joint_value
-
-        before_set_cmd = self.serial.get_uart_servo_angle_array()
-        while np.any(np.array(before_set_cmd)==-1):
+    def getJointPositionArray(self, request:msg_def.Empty, context):
+        angles = self.serial.get_uart_servo_angle_array()
+        while np.any(np.array(angles)==-1):
             print("waiting")
-            before_set_cmd = self.serial.get_uart_servo_angle_array()
+            angles = self.serial.get_uart_servo_angle_array()
             time.sleep(0.0001)
-        print(before_set_cmd)
+        print(f"current joint angles are: {angles}")
+        return msg_def.JointPosititonArray(joint_array=angles)
+    
+    def setJointPositionArray(self, request:msg_def.JointPosititonArray, context):
+        requested_angles = request.joint_array
+        self.serial.set_uart_servo_angle_array(angle_s=requested_angles, run_time=2000)
+        return msg_def.ResultResponse(result="OK")
 
-        target_angles = before_set_cmd.copy()
-        target_angles[0] = joint_value
+    # def getJointPositionArray(self, request:x3plus_pb2.Empty, context):
+    #     print(f"joint value is: {request.joint_value}")
+    #     joint_name = request.joint_name
+    #     joint_value = request.joint_value
 
-        if target_angles == before_set_cmd:
-            return x3plus_pb2.SingleJointPositionResponse(result="OK")
+    #     before_set_cmd = self.serial.get_uart_servo_angle_array()
+    #     while np.any(np.array(before_set_cmd)==-1):
+    #         print("waiting")
+    #         before_set_cmd = self.serial.get_uart_servo_angle_array()
+    #         time.sleep(0.0001)
+    #     print(before_set_cmd)
 
-        self.serial.set_uart_servo_angle_array(angle_s=target_angles, run_time=1000)
+    #     target_angles = before_set_cmd.copy()
+    #     target_angles[0] = joint_value
 
-        after_set_cmd = self.serial.get_uart_servo_angle_array()
-        while after_set_cmd!=target_angles:
-            print("waiting for execution to complete")
-            after_set_cmd = self.serial.get_uart_servo_angle_array()
-            time.sleep(0.0001)
-        print(f"after setting angles: {after_set_cmd}")
+    #     if target_angles == before_set_cmd:
+    #         return x3plus_pb2.SingleJointPositionResponse(result="OK")
 
-        # self.serial.set_uart_servo_angle(self.joint_name_to_sid_map[joint_name],joint_value,run_time=1000)
-        return x3plus_pb2.SingleJointPositionResponse(result="OK")
+    #     self.serial.set_uart_servo_angle_array(angle_s=target_angles, run_time=1000)
+
+    #     after_set_cmd = self.serial.get_uart_servo_angle_array()
+    #     while after_set_cmd!=target_angles:
+    #         print("waiting for execution to complete")
+    #         after_set_cmd = self.serial.get_uart_servo_angle_array()
+    #         time.sleep(0.0001)
+    #     print(f"after setting angles: {after_set_cmd}")
+
+    #     # self.serial.set_uart_servo_angle(self.joint_name_to_sid_map[joint_name],joint_value,run_time=1000)
+    #     return x3plus_pb2.SingleJointPositionResponse(result="OK")
 
 def serve():
     port = "50051"
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    x3plus_pb2_grpc.add_RosmasterServicesServicer_to_server(RosmasterServices(), server)
+    srv_def.add_RosmasterServicesServicer_to_server(RosmasterServices(), server)
     server.add_insecure_port("[::]:" + port)
     server.start()
     print("Server started, listening on " + port)

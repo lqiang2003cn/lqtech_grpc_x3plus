@@ -35,15 +35,15 @@ class RosmasterServicesStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.SayHello = channel.unary_unary(
-                '/x3plus.RosmasterServices/SayHello',
-                request_serializer=x3plus__pb2.HelloRequest.SerializeToString,
-                response_deserializer=x3plus__pb2.HelloReply.FromString,
+        self.getJointPositionArray = channel.unary_unary(
+                '/x3plus.RosmasterServices/getJointPositionArray',
+                request_serializer=x3plus__pb2.Empty.SerializeToString,
+                response_deserializer=x3plus__pb2.JointPosititonArray.FromString,
                 _registered_method=True)
-        self.SetSingleJointPosition = channel.unary_unary(
-                '/x3plus.RosmasterServices/SetSingleJointPosition',
-                request_serializer=x3plus__pb2.SingleJointPositionRequest.SerializeToString,
-                response_deserializer=x3plus__pb2.SingleJointPositionResponse.FromString,
+        self.setJointPositionArray = channel.unary_unary(
+                '/x3plus.RosmasterServices/setJointPositionArray',
+                request_serializer=x3plus__pb2.JointPosititonArray.SerializeToString,
+                response_deserializer=x3plus__pb2.ResultResponse.FromString,
                 _registered_method=True)
 
 
@@ -51,13 +51,13 @@ class RosmasterServicesServicer(object):
     """The RosmasterServices definition.
     """
 
-    def SayHello(self, request, context):
+    def getJointPositionArray(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def SetSingleJointPosition(self, request, context):
+    def setJointPositionArray(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -66,15 +66,15 @@ class RosmasterServicesServicer(object):
 
 def add_RosmasterServicesServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'SayHello': grpc.unary_unary_rpc_method_handler(
-                    servicer.SayHello,
-                    request_deserializer=x3plus__pb2.HelloRequest.FromString,
-                    response_serializer=x3plus__pb2.HelloReply.SerializeToString,
+            'getJointPositionArray': grpc.unary_unary_rpc_method_handler(
+                    servicer.getJointPositionArray,
+                    request_deserializer=x3plus__pb2.Empty.FromString,
+                    response_serializer=x3plus__pb2.JointPosititonArray.SerializeToString,
             ),
-            'SetSingleJointPosition': grpc.unary_unary_rpc_method_handler(
-                    servicer.SetSingleJointPosition,
-                    request_deserializer=x3plus__pb2.SingleJointPositionRequest.FromString,
-                    response_serializer=x3plus__pb2.SingleJointPositionResponse.SerializeToString,
+            'setJointPositionArray': grpc.unary_unary_rpc_method_handler(
+                    servicer.setJointPositionArray,
+                    request_deserializer=x3plus__pb2.JointPosititonArray.FromString,
+                    response_serializer=x3plus__pb2.ResultResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -89,7 +89,7 @@ class RosmasterServices(object):
     """
 
     @staticmethod
-    def SayHello(request,
+    def getJointPositionArray(request,
             target,
             options=(),
             channel_credentials=None,
@@ -102,9 +102,9 @@ class RosmasterServices(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/x3plus.RosmasterServices/SayHello',
-            x3plus__pb2.HelloRequest.SerializeToString,
-            x3plus__pb2.HelloReply.FromString,
+            '/x3plus.RosmasterServices/getJointPositionArray',
+            x3plus__pb2.Empty.SerializeToString,
+            x3plus__pb2.JointPosititonArray.FromString,
             options,
             channel_credentials,
             insecure,
@@ -116,7 +116,7 @@ class RosmasterServices(object):
             _registered_method=True)
 
     @staticmethod
-    def SetSingleJointPosition(request,
+    def setJointPositionArray(request,
             target,
             options=(),
             channel_credentials=None,
@@ -129,9 +129,9 @@ class RosmasterServices(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/x3plus.RosmasterServices/SetSingleJointPosition',
-            x3plus__pb2.SingleJointPositionRequest.SerializeToString,
-            x3plus__pb2.SingleJointPositionResponse.FromString,
+            '/x3plus.RosmasterServices/setJointPositionArray',
+            x3plus__pb2.JointPosititonArray.SerializeToString,
+            x3plus__pb2.ResultResponse.FromString,
             options,
             channel_credentials,
             insecure,
