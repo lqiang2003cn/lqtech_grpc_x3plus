@@ -23,6 +23,9 @@ package routeguide;
 
 // Interface exported by the server.
 service RouteGuide {
+
+  rpc HelloFromLqtech(Empty) returns (HelloResponse) {}
+
   // A simple RPC.
   //
   // Obtains the feature at a given position.
@@ -50,6 +53,14 @@ service RouteGuide {
   // Accepts a stream of RouteNotes sent while a route is being traversed,
   // while receiving other RouteNotes (e.g. from other users).
   rpc RouteChat(stream RouteNote) returns (stream RouteNote) {}
+}
+
+message Empty {
+
+}
+
+message HelloResponse {
+  string result = 1;
 }
 
 // Points are represented as latitude-longitude pairs in the E7 representation
