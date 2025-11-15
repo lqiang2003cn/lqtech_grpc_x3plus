@@ -60,6 +60,7 @@ add_custom_command(
 # Include generated *.pb.h files
 include_directories("${CMAKE_CURRENT_BINARY_DIR}")
 
+############### must define this target, otherwise the custom command will no be executed ###############
 # rg_grpc_proto, a static library
 add_library(rg_grpc_proto
   ${rg_grpc_srcs}
