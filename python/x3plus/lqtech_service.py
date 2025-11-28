@@ -31,15 +31,27 @@ class RosmasterServices(srv_def.RosmasterServices):
     def getJointPositionArray(self, request:msg_def.Empty, context):
         angles = self.serial.get_uart_servo_angle_array()
         while np.any(np.array(angles)==-1):
-            print("waiting")
+            # print("waiting")
             angles = self.serial.get_uart_servo_angle_array()
             time.sleep(0.0001)
-        print(f"current joint angles are: {angles}")
+        # print(f"current joint angles are: {angles}")
         return msg_def.JointPosititonArray(joint_array=angles)
     
     def setJointPositionArray(self, request:msg_def.JointPosititonArray, context):
         requested_angles = request.joint_array
         self.serial.set_uart_servo_angle_array(angle_s=requested_angles, run_time=2000)
+        return msg_def.ResultResponse(result="OK")
+    
+    def setJointPositionSingle(self, request:msg_def.SingleJointPositionRequest, context):
+        joint_name = request.joint_name
+        joint_value = request.joint_value
+
+        if joint_name not in self.joint_name_to_sid_map:
+            return msg_def.ResultResponse(result="Joint name not recognized")
+
+        sid = self.joint_name_to_sid_map[joint_name]
+        self.serial.set_uart_servo_angle(sid, joint_value, run_time=2000)
+        
         return msg_def.ResultResponse(result="OK")
 
     # def getJointPositionArray(self, request:x3plus_pb2.Empty, context):

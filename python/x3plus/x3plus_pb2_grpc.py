@@ -45,6 +45,11 @@ class RosmasterServicesStub(object):
                 request_serializer=x3plus__pb2.JointPosititonArray.SerializeToString,
                 response_deserializer=x3plus__pb2.ResultResponse.FromString,
                 _registered_method=True)
+        self.setJointPositionSingle = channel.unary_unary(
+                '/x3plus.RosmasterServices/setJointPositionSingle',
+                request_serializer=x3plus__pb2.SingleJointPositionRequest.SerializeToString,
+                response_deserializer=x3plus__pb2.ResultResponse.FromString,
+                _registered_method=True)
 
 
 class RosmasterServicesServicer(object):
@@ -63,6 +68,12 @@ class RosmasterServicesServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def setJointPositionSingle(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_RosmasterServicesServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -74,6 +85,11 @@ def add_RosmasterServicesServicer_to_server(servicer, server):
             'setJointPositionArray': grpc.unary_unary_rpc_method_handler(
                     servicer.setJointPositionArray,
                     request_deserializer=x3plus__pb2.JointPosititonArray.FromString,
+                    response_serializer=x3plus__pb2.ResultResponse.SerializeToString,
+            ),
+            'setJointPositionSingle': grpc.unary_unary_rpc_method_handler(
+                    servicer.setJointPositionSingle,
+                    request_deserializer=x3plus__pb2.SingleJointPositionRequest.FromString,
                     response_serializer=x3plus__pb2.ResultResponse.SerializeToString,
             ),
     }
@@ -131,6 +147,33 @@ class RosmasterServices(object):
             target,
             '/x3plus.RosmasterServices/setJointPositionArray',
             x3plus__pb2.JointPosititonArray.SerializeToString,
+            x3plus__pb2.ResultResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def setJointPositionSingle(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/x3plus.RosmasterServices/setJointPositionSingle',
+            x3plus__pb2.SingleJointPositionRequest.SerializeToString,
             x3plus__pb2.ResultResponse.FromString,
             options,
             channel_credentials,

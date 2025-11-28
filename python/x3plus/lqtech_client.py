@@ -19,21 +19,29 @@ def run():
             print(f"client received: {response.joint_array}")
 
             target_angles = list(response.joint_array)
-            target_angles[0] = 0  # Example modification
+            target_angles[0] = 92  # Example modification
             
-            response = stub.setJointPositionArray(
-                msg_def.JointPosititonArray(
-                    joint_array=target_angles
+            response = stub.setJointPositionSingle(
+                msg_def.SingleJointPositionRequest(
+                    joint_name="arm_joint1",
+                    joint_value=target_angles[0]
                 )
             )
             print(f"Set joint position response: {response.result}")
 
-            response = stub.setJointPositionArray(
-                msg_def.JointPosititonArray(
-                    joint_array=target_angles
-                )
-            )
-            print(f"Set joint position response: {response.result}")
+            # response = stub.setJointPositionArray(
+            #     msg_def.JointPosititonArray(
+            #         joint_array=target_angles
+            #     )
+            # )
+            # print(f"Set joint position response: {response.result}")
+
+            # response = stub.setJointPositionArray(
+            #     msg_def.JointPosititonArray(
+            #         joint_array=target_angles
+            #     )
+            # )
+            # print(f"Set joint position response: {response.result}")
 
 
 

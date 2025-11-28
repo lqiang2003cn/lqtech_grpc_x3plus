@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cx3plus.proto\x12\x06x3plus\"\x07\n\x05\x45mpty\"E\n\x1aSingleJointPositionRequest\x12\x12\n\njoint_name\x18\x01 \x01(\t\x12\x13\n\x0bjoint_value\x18\x02 \x01(\x05\" \n\x0eResultResponse\x12\x0e\n\x06result\x18\x01 \x01(\t\"*\n\x13JointPosititonArray\x12\x13\n\x0bjoint_array\x18\x01 \x03(\x05\x32\xaa\x01\n\x11RosmasterServices\x12\x45\n\x15getJointPositionArray\x12\r.x3plus.Empty\x1a\x1b.x3plus.JointPosititonArray\"\x00\x12N\n\x15setJointPositionArray\x12\x1b.x3plus.JointPosititonArray\x1a\x16.x3plus.ResultResponse\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0cx3plus.proto\x12\x06x3plus\"\x07\n\x05\x45mpty\"E\n\x1aSingleJointPositionRequest\x12\x12\n\njoint_name\x18\x01 \x01(\t\x12\x13\n\x0bjoint_value\x18\x02 \x01(\x05\" \n\x0eResultResponse\x12\x0e\n\x06result\x18\x01 \x01(\t\"*\n\x13JointPosititonArray\x12\x13\n\x0bjoint_array\x18\x01 \x03(\x05\x32\x82\x02\n\x11RosmasterServices\x12\x45\n\x15getJointPositionArray\x12\r.x3plus.Empty\x1a\x1b.x3plus.JointPosititonArray\"\x00\x12N\n\x15setJointPositionArray\x12\x1b.x3plus.JointPosititonArray\x1a\x16.x3plus.ResultResponse\"\x00\x12V\n\x16setJointPositionSingle\x12\".x3plus.SingleJointPositionRequest\x1a\x16.x3plus.ResultResponse\"\x00\x62\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -40,5 +40,5 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_JOINTPOSITITONARRAY']._serialized_start=138
   _globals['_JOINTPOSITITONARRAY']._serialized_end=180
   _globals['_ROSMASTERSERVICES']._serialized_start=183
-  _globals['_ROSMASTERSERVICES']._serialized_end=353
+  _globals['_ROSMASTERSERVICES']._serialized_end=441
 # @@protoc_insertion_point(module_scope)
